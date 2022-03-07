@@ -87,8 +87,12 @@ root@5e655725dd54:/home/workspace#
 !python create_tables.py
 ```
 
-*NOTE: The above command may already exist and if so, just run the cell. If there is no empty cell, click to hightlight the bottom-most text and then click the "+" button on the notebook toolbar to "Insert a cell below".*
-3. Once the create_tables.py script has completed, click the "+" button on the notebook toolbar to "Insert a cell below". NOTE: The below command may already exist and if so, just run the cell.
+> NOTE: The above command may already exist and if so, just run the cell. If there is no empty cell, click to hightlight the bottom-most text and then click the "+" button on the notebook toolbar to "Insert a cell below".
+
+3. Once the create_tables.py script has completed, click the "+" button on the notebook toolbar to "Insert a cell below".
+
+> NOTE: The below command may already exist and if so, just run the cell.
+ 
 4. In the new cell enter:
 
 ```bash
@@ -135,7 +139,7 @@ I found that four of the five table insertion queries required ON CONFLICT ON CO
 
 #### Descriptions of Each Table from the sparkifydb Schema
 
-*For each table depicted below there is a description underneath.*
+> NOTE: For each table depicted below there is a description underneath.
 
 ```bash
           List of relations
@@ -236,7 +240,7 @@ Referenced by:
     TABLE "songplay" CONSTRAINT "songplay_song_id_fkey" FOREIGN KEY (song_id) REFERENCES song(song_id)
 ```
 
-The artist.artist_id Primary Key is referenced by the song.artist_id Foreign Key in a one to many relationship (i.e. one song can have only one artist. NOTE: It should be possible for one song to have multiple artists [e.g. in a duet], but it's not clear how that might be implemented by this data set). The "title" and "duration" columns cannot be NULL. 
+The artist.artist_id Primary Key is referenced by the song.artist_id Foreign Key in a one to many relationship (i.e. one song can have only one artist. *NOTE: It should be possible for one song to have multiple artists [e.g. in a duet], but it's not clear how that might be implemented by this data set*). The "title" and "duration" columns cannot be NULL. 
 
 ```bash
             Table "public.users"
