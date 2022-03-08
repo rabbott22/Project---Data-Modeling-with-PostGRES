@@ -59,77 +59,77 @@ The log files are appended, so one may wish to start fresh by deleting the log f
 1. From the Launcher tab (File -> New Launcher), start a new Terminal session.
 2. From the command line, execute the "create_tables.py" and "etl.py" Python scripts as follows:
 
-```bash
-root@5e655725dd54:/home/workspace# python create_tables.py
-root@5e655725dd54:/home/workspace# python etl.py
-71 files found in data/song_data
-1/71 files processed.
-2/71 files processed.
-3/71 files processed.
-...
-30 files found in data/log_data
-1/30 files processed.
-2/30 files processed.
-3/30 files processed.
-...
-28/30 files processed.
-29/30 files processed.
-30/30 files processed.
-root@5e655725dd54:/home/workspace#
-```
+    ```bash
+    root@5e655725dd54:/home/workspace# python create_tables.py
+    root@5e655725dd54:/home/workspace# python etl.py
+    71 files found in data/song_data
+    1/71 files processed.
+    2/71 files processed.
+    3/71 files processed.
+    ...
+    30 files found in data/log_data
+    1/30 files processed.
+    2/30 files processed.
+    3/30 files processed.
+    ...
+    28/30 files processed.
+    29/30 files processed.
+    30/30 files processed.
+    root@5e655725dd54:/home/workspace#
+    ```
 
 #### Option 2 - Using Jupyter Notebook "etl.ipynb"
 
 1. Open the etl.ipynb notebook, scroll to the bottom.
 2. Under the heading "Implement etl.py", in the empty cell enter:
 
-```bash
-!python create_tables.py
-```
+    ```bash
+    !python create_tables.py
+    ```
 
-> NOTE: The above command may already exist and if so, just run the cell. If there is no empty cell, click to hightlight the bottom-most text and then click the "+" button on the notebook toolbar to "Insert a cell below".
+    > NOTE: The above command may already exist and if so, just run the cell. If there is no empty cell, click to hightlight the bottom-most text and then click the "+" button on the notebook toolbar to "Insert a cell below".
 
 3. Once the create_tables.py script has completed, click the "+" button on the notebook toolbar to "Insert a cell below".
 
-> NOTE: The below command may already exist and if so, just run the cell.
- 
+    > NOTE: The below command may already exist and if so, just run the cell.
+
 4. In the new cell enter:
 
-```bash
-!python etl.py
-```
+    ```bash
+    !python etl.py
+    ```
 
-You should see output to screen resembling the following:
+    You should see output to screen resembling the following:
 
-```bash
-71 files found in data/song_data
-1/71 files processed.
-...
-71/71 files processed.
-30 files found in data/log_data
-1/30 files processed.
-...
-30/30 files processed.
-```
+    ```bash
+    71 files found in data/song_data
+    1/71 files processed.
+    ...
+    71/71 files processed.
+    30 files found in data/log_data
+    1/30 files processed.
+    ...
+    30/30 files processed.
+    ```
 
 ### How to Test/Verify the Results
 
 1. Open the test.ipynb notebook and click to highlight the top cell:
 
-```bash
-%load_ext sql
-```
+    ```bash
+    %load_ext sql
+    ```
 
 2. From the Jupyter "Run" menu, select "Run selected cell and all below".
 3. Scroll down the notebook to verify that all queries executed successfully and returned the expected result.
 
 ### Database Schema Design and ETL Pipeline Justification
 
-#### Entity Relationship Diagram of the sparkifydb Database and Brief Commentary on ETL 
+#### Entity Relationship Diagram of the sparkifydb Database and Brief Commentary on ETL
 
 ![Sparkify Database Star Schema](./Sparkify_Database_Star_Schema.jpg)
 
-This is a Star schema configuration.  The "songplay" and "time" tables serve as Fact Tables in this schema and the rest are Dimension Tables. 
+This is a Star schema configuration.  The "songplay" and "time" tables serve as Fact Tables in this schema and the rest are Dimension Tables.
 
 While completing the etl.py script, I found it necessary to change the order of operations in the process_song_file function. It had been set up so that the song table was loaded first.  However, with the Foreign Key constraint in place on the song.artist_id field, the song table insert statements would fail the refrerential integrity check if the artist table had not first been populated.  I therefore moved the artist_table_insert operaton first.
 
@@ -240,7 +240,7 @@ Referenced by:
     TABLE "songplay" CONSTRAINT "songplay_song_id_fkey" FOREIGN KEY (song_id) REFERENCES song(song_id)
 ```
 
-The artist.artist_id Primary Key is referenced by the song.artist_id Foreign Key in a one to many relationship (i.e. one song can have only one artist. *NOTE: It should be possible for one song to have multiple artists [e.g. in a duet], but it's not clear how that might be implemented by this data set*). The "title" and "duration" columns cannot be NULL. 
+The artist.artist_id Primary Key is referenced by the song.artist_id Foreign Key in a one to many relationship (i.e. one song can have only one artist. *NOTE: It should be possible for one song to have multiple artists [e.g. in a duet], but it's not clear how that might be implemented by this data set*). The "title" and "duration" columns cannot be NULL.
 
 ```bash
             Table "public.users"
@@ -257,7 +257,7 @@ Referenced by:
     TABLE "songplay" CONSTRAINT "songplay_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(user_id)
 ```
 
-I chose to specify precise character data types for gender and level, which seemed the most efficient for these simple values. Note that the level field data type matches that of songplay.level.  The user.user_id field is referenced by the songplay.user_id Foreign Key in a one-to-many relationship (i.e. one user can play many songs, but one song play can have only one user). 
+I chose to specify precise character data types for gender and level, which seemed the most efficient for these simple values. Note that the level field data type matches that of songplay.level.  The user.user_id field is referenced by the songplay.user_id Foreign Key in a one-to-many relationship (i.e. one user can play many songs, but one song play can have only one user).
 
 ### Example Queries and Results for Song Play Analysis
 
@@ -265,72 +265,72 @@ I chose to specify precise character data types for gender and level, which seem
 
 2. What time of day do users listen most? *In the query result below, it's clear that users listen most often on Thursday (weekday 4) between the hours of 3:00PM and 9:00PM (during hours 15 - 18).*
 
-```bash
-SELECT weekday, hour, COUNT(hour) as "plays/hr" FROM time GROUP BY weekday, hour ORDER BY "plays/hr" DESC LIMIT 10;
+    ```bash
+    SELECT weekday, hour, COUNT(hour) as "plays/hr" FROM time GROUP BY weekday, hour ORDER BY "plays/hr" DESC LIMIT 10;
 
- weekday | hour | plays/hr 
----------+------+----------
-       4 |   16 |      140
-       4 |   15 |      121
-       1 |   20 |      115
-       4 |   18 |      107
-       4 |   17 |      107
-       2 |    9 |      104
-       0 |   15 |       99
-       1 |   19 |       94
-       3 |   18 |       93
-       3 |   16 |       91
-(10 rows)
-```
+    weekday | hour | plays/hr 
+    ---------+------+----------
+        4 |   16 |      140
+        4 |   15 |      121
+        1 |   20 |      115
+        4 |   18 |      107
+        4 |   17 |      107
+        2 |    9 |      104
+        0 |   15 |       99
+        1 |   19 |       94
+        3 |   18 |       93
+        3 |   16 |       91
+    (10 rows)
+    ```
 
-3. Which users are spending the most time listening? ***(NOTE: This example produces only one record because there is only one song play record in the songplay table containing a song_id value)*** 
+3. Which users are spending the most time listening? ***(NOTE: This example produces only one record because there is only one song play record in the songplay table containing a song_id value)***
 
-```bash
-SELECT u.user_id, u.first_name, u.last_name, SUM(s.duration) AS listen_time FROM users u JOIN songplay sp ON u.user_id = sp.user_id JOIN song s ON sp.song_id = s.song_id GROUP BY u.user_id ORDER BY listen_time;
+    ```bash
+    SELECT u.user_id, u.first_name, u.last_name, SUM(s.duration) AS listen_time FROM users u JOIN songplay sp ON u.user_id = sp.user_id JOIN song s ON sp.song_id = s.song_id GROUP BY u.user_id ORDER BY listen_time;
 
- user_id | first_name | last_name | listen_time 
----------+------------+-----------+-------------
-      15 | Lily       | Koch      |   269.58322
-```
+    user_id | first_name | last_name | listen_time 
+    ---------+------------+-----------+-------------
+        15 | Lily       | Koch      |   269.58322
+    ```
 
 4. Which artists are most popular? ***(NOTE: This example produces only one record because there is only one song play record in the songplay table containing an artist_id value)***
 
-```bash
-SELECT a.artist_id, a.name, COUNT(sp.artist_id) num_artist_plays FROM songplay sp JOIN artist a ON sp.artist_id = a.artist_id GROUP BY a.artist_id ORDER BY num_artist_plays;
+    ```bash
+    SELECT a.artist_id, a.name, COUNT(sp.artist_id) num_artist_plays FROM songplay sp JOIN artist a ON sp.artist_id = a.artist_id GROUP BY a.artist_id ORDER BY num_artist_plays;
 
-     artist_id      | name  | num_artist_plays 
---------------------+-------+------------------
- AR5KOSW1187FB35FF4 | Elena |                1
-(1 row)
-```
+        artist_id      | name  | num_artist_plays 
+    --------------------+-------+------------------
+    AR5KOSW1187FB35FF4 | Elena |                1
+    (1 row)
+    ```
 
 5. Which songs are most popular? ***(NOTE: This example produces only one record because there is only one song play record in the songplay table containing a song_id value)***
 
-```bash
-SELECT a.name, s.title, s.year, COUNT(sp.song_id) AS num_song_plays FROM songplay sp JOIN song s ON sp.song_id = s.song_id JOIN artist a ON sp.artist_id = a.artist_id GROUP BY a.name, s.title, s.year ORDER BY num_song_plays;
+    ```bash
+    SELECT a.name, s.title, s.year, COUNT(sp.song_id) AS num_song_plays FROM songplay sp JOIN song s ON sp.song_id = s.song_id JOIN artist a ON sp.artist_id = a.artist_id GROUP BY a.name, s.title, s.year ORDER BY num_song_plays;
 
- name  |     title      | year | num_song_plays 
--------+----------------+------+----------------
- Elena | Setanta matins |    0 |              1
-(1 row)
-```
+    name  |     title      | year | num_song_plays 
+    -------+----------------+------+----------------
+    Elena | Setanta matins |    0 |              1
+    (1 row)
+    ```
 
 6. Locations where songs are played most often? *Songs are played most often in San Fransciso, with Sacremento ranked 10th*
 
-```bash
-SELECT location, COUNT(location) AS plays_per_location FROM songplay GROUP BY location ORDER BY plays_per_location DESC LIMIT 10;
+    ```bash
+    SELECT location, COUNT(location) AS plays_per_location FROM songplay GROUP BY location ORDER BY plays_per_location DESC LIMIT 10;
 
-                location                 | plays_per_location 
------------------------------------------+--------------------
- San Francisco-Oakland-Hayward, CA       |                691
- Portland-South Portland, ME             |                665
- Lansing-East Lansing, MI                |                557
- Chicago-Naperville-Elgin, IL-IN-WI      |                475
- Atlanta-Sandy Springs-Roswell, GA       |                456
- Waterloo-Cedar Falls, IA                |                397
- Lake Havasu City-Kingman, AZ            |                321
- Tampa-St. Petersburg-Clearwater, FL     |                307
- San Jose-Sunnyvale-Santa Clara, CA      |                292
- Sacramento--Roseville--Arden-Arcade, CA |                270
-(10 rows)
-```
+                    location                 | plays_per_location 
+    -----------------------------------------+--------------------
+    San Francisco-Oakland-Hayward, CA       |                691
+    Portland-South Portland, ME             |                665
+    Lansing-East Lansing, MI                |                557
+    Chicago-Naperville-Elgin, IL-IN-WI      |                475
+    Atlanta-Sandy Springs-Roswell, GA       |                456
+    Waterloo-Cedar Falls, IA                |                397
+    Lake Havasu City-Kingman, AZ            |                321
+    Tampa-St. Petersburg-Clearwater, FL     |                307
+    San Jose-Sunnyvale-Santa Clara, CA      |                292
+    Sacramento--Roseville--Arden-Arcade, CA |                270
+    (10 rows)
+    ```
