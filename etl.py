@@ -7,6 +7,17 @@ from time import strftime
 
 
 def process_song_file(cur, filepath):
+    """
+    - Read song and artist data from Sparkify JSON song files in file 
+    system. 
+    
+    - Load data into the corresponding "song" and "artist" tables
+    in the database.
+
+    Arguments:
+    cur -- database connection cursor
+    filepath -- absolute path to the source JSON files 
+    """
     # open song file
     df = pd.read_json(filepath, lines=True)
 
@@ -39,6 +50,16 @@ def process_song_file(cur, filepath):
     cur.execute(song_table_insert, song_data)
 
 def process_log_file(cur, filepath):
+    """
+    - Read songplay, time, and user data from Sparkify JSON log files 
+    in file system.
+    
+    - Load data into the corresponding "songplay", "time", and "users" tables in the database.
+
+    Arguments:
+    cur -- database connection cursor
+    filepath -- absolute path to the source JSON files
+    """
     # open log file
     df = pd.read_json(filepath, lines=True)
 
@@ -96,6 +117,24 @@ def process_log_file(cur, filepath):
 
 
 def process_data(cur, conn, filepath, func):
+    """
+    - Create a list of absolute file paths to the Sparkify JSON 
+    song and log files in the file system.
+    
+    - Call the function corresponding to the file type for processing.
+
+    Arguments:
+    cur -- database connection cursor
+    conn -- database connection
+    filepath -- relative path to the source JSON files
+    func -- function to call, either process_song_file or process_log_file
+
+    Returns:
+    For each file type, it prints to stdout:
+        "x files found in <relative filepath>"
+        "n/x files processed."
+        (where x = total files found, n = incremental file number) 
+    """
     # get all files matching extension from directory
     all_files = []
     for root, dirs, files in os.walk(filepath):
@@ -115,6 +154,15 @@ def process_data(cur, conn, filepath, func):
 
 
 def main():
+    """
+    - Create a connection to the database.
+    
+    - Generate a database cursor.
+    
+    - Call the song and log file processing functions.
+    
+    - Close the database connection.
+    """    
     # Connect to database
     conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=student password=student")
     # Generate database cursor
